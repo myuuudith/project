@@ -1,0 +1,200 @@
+import './style.css';
+import React from "react";
+import { Nav, Navbar, Container, Button, Form, FormControl, Table, ButtonGroup, Modal } from "react-bootstrap";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+
+const API_URL="https://api-bootcamp.do.dibimbing.id/api/v1/foods"
+
+function MealItem() {
+const [data, setData] = useState([]);
+// const [Ingridients, setIngredients] = useState('');
+// const [description, setDescription] = useState(1);
+// const [rating, setRating] = useState();
+// const [image, setImage] = useState();
+
+const [nameEdit, setNameEdit] = useState('');
+const [IngredientsEdit, setIngredientsEdit] = useState(1);
+const [descriptionEdit, setDescriptionEdit] = useState();
+const [imageEdit, setImageEdit] = useState();
+const [RatingEdit, setRatingEdit] = useState();
+const [show, setShow] = useState(false);
+
+const handleClose = () => setShow(false);
+const handleShow = (id) => setShow(id);
+
+// const MealItem = () =>{
+useEffect((value)=> {
+    axios({
+        method: 'get',
+        url: 'https://api-bootcamp.do.dibimbing.id/api/v1/foods',
+        value,
+          headers : {          
+            apiKey: `${process.env.REACT_APP_APIKEY}`,
+          }
+    })
+    .then(function(response){
+        console.log(response)
+        setData(response.data.data)
+    });
+
+    const handleEdit = () => {
+      axios ({
+        method: 'post',
+        url: `https://api-bootcamp.do.dibimbing.id/api/v1/create-food`,
+        data: {
+          name: nameEdit,
+          ingredients: IngredientsEdit,
+          description: descriptionEdit,
+          image: imageEdit,
+          rating: RatingEdit
+        }
+      })
+      .then(function (response) {
+        handleClose()
+        setNameEdit('')
+        setIngredientsEdit('')
+        setDescriptionEdit('')
+        setImageEdit('')
+        setRatingEdit('')
+        MealItem()
+      });
+    }
+
+const handleDelete = (id) => {
+    if (window.confirm(`Delete ID ${id}?`)) {
+    axios ({
+      method: 'del',
+      url: `https://api-bootcamp.do.dibimbing.id/api/v1/delete-food/efdd307b-1d9c-4a47-9d40-d3720708711f`,})
+    .then(function (response) {
+      MealItem()
+    });
+  }
+  }}, []);
+
+
+    return(
+        <>
+
+        
+    <nav className="navbar">
+        <h3 className="home">Foodies</h3>
+        <ul className="nav-links">
+        
+        <Link to="/home" className="home">
+            <li>Home</li>
+          </Link>
+        
+          <Link to="/menu" className="menu">
+            <li>Menu</li>
+          </Link>
+
+          <Link to="/login" className="login">
+            <li>Login</li>
+          </Link>
+        </ul>
+      </nav>
+            <p className='text-menu1'>Sure to add one and let people know better!</p>
+
+          <Navbar.Collapse id="nabarScroll">
+            <Nav
+              className="me-auto my-2 my-lg3"
+              style={{ maxHeight: '100px' }}
+              navbarScroll>
+
+              <Form className='d-flex' >
+                <FormControl
+                  type="search"
+                  placeholder='Foodies Search'
+                  className="me-2"
+                  aria-label="search"
+                  name="query"
+                  >
+                </FormControl>
+                <Button variant="secondary" type={"submit"}>
+                  search
+                </Button>
+              </Form>
+            </Nav>
+          </Navbar.Collapse>
+
+<Table className='table table-hover table-dark'>
+    <thead className='thead-light'>
+      <tr>
+        <th scope="col">Number</th>
+        <th className='col-sm-2 list'>Name</th>
+        <th className='list'>Description</th>
+        <th scope='col'>Image URL</th>
+        <th className='list'>ingredients</th>
+        <th className='list'>Rating</th>
+        <th className='col'>Edit</th>
+      </tr>
+    </thead>
+
+
+    <tbody>
+    {data.map((item, index) => {
+      return <tr key={index}>
+        <td>{index + 1}</td>
+        <td>{item.name}</td>
+        <td>{item.description}</td>
+        <td className='imageurl'> {item.imageUrl}</td>
+        <td>{item.ingredients}</td>
+        <td>{item.rating}</td>
+        <td><ButtonGroup aria-label="Action">
+      <Button size="sm" variant="primary" onClick={() => handleShow(item.id)}>Edit</Button>
+      {/* <Button size="sm" variant="danger" onClick={() => handleDelete(item.id)}>Delete</Button> */}
+    </ButtonGroup></td>
+    </tr>
+    })}
+    </tbody>
+    </Table>
+    <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3" controlId="formBasicName">
+              <Form.Label>Name</Form.Label>
+              <Form.Control value={nameEdit} type="text" onChange={(e) => setNameEdit(e.target.value)} placeholder="Enter Food Name" />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicDescription">
+              <Form.Label>Description</Form.Label>
+              <Form.Control value={descriptionEdit} type="text" onChange={(e) => setDescriptionEdit(e.target.value)} placeholder="Enter Description" />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicImage">
+              <Form.Label>Image</Form.Label>
+              <Form.Control value={imageEdit} type="text" onChange={(e) => setImageEdit(e.target.value)} placeholder="Enter Image" />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicIngridients">
+              <Form.Label>Ingredients</Form.Label>
+              <Form.Control value={IngredientsEdit} type="text" onChange={(e) => setIngredientsEdit(e.target.value)} placeholder="Enter Ingridients" />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicRating">
+              <Form.Label>Rating</Form.Label>
+              <Form.Control value={RatingEdit} type="number" onChange={(e) => setRatingEdit(e.target.value)} placeholder="Enter Rating" />
+            </Form.Group>
+            
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          {/* <Button variant="primary" onClick={handleEdit}>
+            Save Changes
+          </Button> */}
+        </Modal.Footer>
+      </Modal>
+        </>
+    );
+  }
+
+// }
+export default MealItem;
