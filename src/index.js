@@ -7,15 +7,17 @@ import reportWebVitals from './reportWebVitals';
 import Login from './Login';
 import MealItem from './MealItem';
 import Register from './register'
-// import Appel from './appel'
+import register from './registertest';
+import Likemeal from './likemeal'
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
+import Registertest from './registertest';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <>
       {/* <p>Navbar</p> */}
-      <Frontpage />
+      <MealItem />
     </>,
     errorElement: <p>Page Not Found</p>,
     children: [
@@ -39,7 +41,7 @@ const router = createBrowserRouter([
 
   {
     path: "/home",
-    element: <Frontpage />,
+    element: <MealItem />,
   },
 
   {
@@ -50,12 +52,17 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element:<Register/>
-  }
+  },
 
-  // {
-  //   path:"/test",
-  //   element:<Appel/>
-  // }
+  {
+    path: "/test",
+    element:<Registertest/>
+  },
+
+  {
+    path: "/test11",
+    element:<Likemeal/>
+  }
 ]);
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

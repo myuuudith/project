@@ -45,8 +45,6 @@ function Login(){
 
     return(
         <>
-        <h1 className="Login-text1">Hello! Welcome to Foodies!!</h1>
-        <h3 className="Login-text2">Haven't join yet? Come in and became a member of Foodies</h3><br/>
         
         <nav className="navbar">
         <h3 className="home">Foodies</h3>
@@ -65,19 +63,16 @@ function Login(){
           </Link>
         </ul>
       </nav>
-
+      
+      <div class="alert alert-warning card-register" role="alert">
+  <h4 class="alert-heading">Hey-hey-heyy</h4>
+  <p>Thank you for your contribution for make this website big and bigger! For better future from you and for others!</p>
+  <br/>
+</div>
       {/* --------------LOGIN AREA-------------- */}
 
-      <div className="cover">
+      <div className="cover-login">
         <p className="text-area-f1">Login here please!!</p><br/>
-
-      {/* <label
-      style={{ fontSize: 20, textAlign:"center" }}
-      className="label-email"
-        htmlFor="email"
-      >
-        Email
-      </label> */}
 
       <div className="body-login">
       <form onSubmit={formik.handleSubmit}>

@@ -1,20 +1,19 @@
 import './style.css';
 import React from "react";
-import { Nav, Navbar, Container, Button, Form, FormControl, Table, ButtonGroup, Modal, Collapse } from "react-bootstrap";
+import { Button, Form, ButtonGroup, Modal, Collapse } from "react-bootstrap";
+// import {button} from "bootstrap"
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AiFillStar, AiTwotoneEdit } from "react-icons/ai";
+import * as Yup from "yup"
+import { Formik } from 'formik';
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
 
 const API_URL="https://api-bootcamp.do.dibimbing.id/api/v1/foods"
 
 function MealItem() {
 const [data, setData] = useState([]);
-// const [Ingridients, setIngredients] = useState('');
-// const [description, setDescription] = useState(1);
-// const [rating, setRating] = useState();
-// const [image, setImage] = useState();
 
 const [nameEdit, setNameEdit] = useState('');
 const [IngredientsEdit, setIngredientsEdit] = useState(1);
@@ -73,13 +72,55 @@ const handleDelete = (id) => {
       MealItem()
     });
   }
-  }}, []);
+  }
+
+const handleLike= (id, like) =>{
+if (!like){
+  axios({
+    method:"post",
+    url:"https://api-bootcamp.do.dibimbing.id/api/v1/like",
+    data:{
+      foodId: id,
+    },
+    headers:{
+      apiKey: `${process.env.REACT_APP_APIKEY}`
+    }
+  })
+  .then((response) => {
+    console.log(response);
+    MealItem();
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+}
+else{
+  axios({
+    method:"post",
+    url:"https://api-bootcamp.do.dibimbing.id/api/v1/unlike",
+    data:{
+      foodId: id,
+    },
+    headers:{
+      apiKey: `${process.env.REACT_APP_APIKEY}`
+    }
+  })
+  .then((response) => {
+    console.log(response);
+    MealItem();
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+}
+}
+}, []);
 
 
     return(
         <>
 
-        
+  <div>
     <nav className="navbar">
         <h3 className="home">Foodies</h3>
         <ul className="nav-links">
@@ -95,10 +136,71 @@ const handleDelete = (id) => {
           <Link to="/login" className="login">
             <li>Login</li>
           </Link>
+
+         
+          
         </ul>
       </nav>
-            <p className='text-menu1'>Sure to add one and let people know better!</p>
-            <p className='text-menu1'>make sure you already register before!</p>
+      <div class="card text-center">
+  <div class="card-header">
+    About Foodies
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">A new Website to help strangers</h5>
+    <p class="card-text">Foodies is more like a home to new people.<br/>With support from everyone of you, we can provide information from each of you to share and make a new memory.<br/>Let start from foodies</p>
+    <a href="/login" class="btn btn-dark">Enter the world</a>
+  </div>
+</div>
+            <div class="alert alert-warning card-menu" role="alert">
+  Hey! We're short of menu! Add one!
+  <br/>
+
+  <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Click here!
+</button>
+
+<Formik
+initialValues={{
+          name: "",
+          description: "",
+          imageUrl: "",
+          ingredients: [""],
+        }}
+        validationSchema={Yup.object({
+          name: Yup.string().required("Required"),
+          description: Yup.string().required("Required"),
+          imageUrl: Yup.string().required("Required"),
+        })}
+        // onSubmit={onSubmit}
+        >
+</Formik>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <p>Name:</p>
+      <input class="form-control form-control-sm" type="text" placeholder="" aria-label=".form-control-sm example"/>
+      <p>Description:</p>
+      <input class="form-control form-control-sm" type="text" placeholder="" aria-label=".form-control-sm example"/>
+      <p>ImageUrl:</p>
+      <input class="form-control form-control-sm" type="text" placeholder="" aria-label=".form-control-sm example"/>
+      <p>Ingridients:</p>
+      <input class="form-control form-control-sm" type="text" placeholder="" aria-label=".form-control-sm example"/>
+
+      </div>
+      <div class="modal-footer ">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button"  class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
 
 
     <section className='py-4 py-lg-5 container'>
@@ -107,14 +209,20 @@ const handleDelete = (id) => {
       return <React.Fragment >
 <div className="container text-center">
     <div className="row">
-      <div className="col-11 col-md-6 col-lg-3 mx-0 mb-4" key={index}>
+      <div className="col-md-6 mx-0 mb-4 item11" key={index}>
       <div className="card">
         <img src={item.imageUrl} className="card-img-top" alt={item.name}/>
         <div className="card-body">
           <h5>{item.name}</h5>
           <p className="desc">{item.description}</p>
           <a className="btn btn-light"><AiFillStar/>{item.rating}</a>
-          <a className='btn btn-dark'><AiTwotoneEdit/>Ingridients</a>
+          <p><AiTwotoneEdit/>{item.ingredients}</p>
+          <div className=''>
+          <td><ButtonGroup aria-label="Action">
+      <Button size="sm" variant="light" className='edit-meal1' onClick={() => handleShow(item.id)}>Edit your menu</Button>
+    </ButtonGroup>
+    </td>
+          </div>
         </div>
       </div>
     </div>
@@ -127,9 +235,9 @@ const handleDelete = (id) => {
 
 
 
-
+<div className='edit-meal'>
 {/* ---------------------------EDIT */}
-    
+
     <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Edit</Modal.Title>
@@ -158,7 +266,7 @@ const handleDelete = (id) => {
 
             <Form.Group className="mb-3" controlId="formBasicRating">
               <Form.Label>Rating</Form.Label>
-              <Form.Control value={RatingEdit} type="number" onChange={(e) => setRatingEdit(e.target.value)} placeholder="Enter Rating" />
+              <Form.Control value={RatingEdit} type="text" onChange={(e) => setRatingEdit(e.target.value)} placeholder="Enter Rating" />
             </Form.Group>
             
           </Form>
@@ -167,11 +275,13 @@ const handleDelete = (id) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          {/* <Button variant="primary" onClick={handleEdit}>
+          <Button variant="primary">
             Save Changes
-          </Button> */}
+          </Button>
         </Modal.Footer>
       </Modal>
+      </div>
+      </div>
         </>
     );
   }
