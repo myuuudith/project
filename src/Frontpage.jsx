@@ -37,7 +37,6 @@ const Frontpage=()=>{
         </ul>
       </nav>
 
-{/* <h1 className="text-center text-success my-5">Look out for more foodies!!</h1> */}
 
 <div class="card text-center">
   <div class="card-header">

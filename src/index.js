@@ -1,16 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import './index.css';
-import Frontpage from './Frontpage';
 import reportWebVitals from './reportWebVitals';
 import Login from './Login';
 import MealItem from './MealItem';
 import Register from './register'
-import register from './registertest';
-import Likemeal from './likemeal'
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
 import Registertest from './registertest';
+import AddFood from './addFood';
 
 const router = createBrowserRouter([
   {
@@ -60,9 +57,10 @@ const router = createBrowserRouter([
   },
 
   {
-    path: "/test11",
-    element:<Likemeal/>
+  path: "/addFood",
+  element: <AddFood/>
   }
+
 ]);
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

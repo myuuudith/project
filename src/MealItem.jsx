@@ -1,7 +1,7 @@
 import './style.css';
 import React from "react";
 import { Button, Form, ButtonGroup, Modal, Collapse } from "react-bootstrap";
-// import {button} from "bootstrap"
+import {button} from "bootstrap"
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -73,6 +73,8 @@ const handleDelete = (id) => {
     });
   }
   }
+
+
 
 const handleLike= (id, like) =>{
 if (!like){
@@ -178,7 +180,7 @@ initialValues={{
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Food</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">

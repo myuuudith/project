@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import Axios from "axios";
-import { Formik, useFormik } from "formik";
+import { useFormik } from "formik";
 import * as Yup from 'yup';
-import { useNavigate } from "react-router-dom";
-// import { Nav, Navbar, Container } from "react-bootstrap";
+// import { useNavigate } from "react-router-dom";
 import "./login.css";
 import { Link } from "react-router-dom";
 
@@ -116,13 +115,6 @@ function Login(){
       <div className="cover">
         <p className="text-area-f1">Register in this page!!</p><br/>
 
-      {/* <label
-      style={{ fontSize: 20, textAlign:"center" }}
-      className="label-email"
-        htmlFor="email"
-      >
-        Email
-      </label> */}
       <div className="body-login">
       <form onSubmit={formik.handleSubmit}>
 

@@ -21,7 +21,6 @@ function Login(){
         .required('Required'),
     }),
     onSubmit: (values) => {
-      // Movie DB auth step 1
       Axios.post(`${process.env.REACT_APP_BASEURL}/api/v1/login`, 
       values,{
         headers : {          
@@ -94,7 +93,6 @@ function Login(){
       <br />
 
       <label 
-      // style={{ fontSize: 20, textAlign:"center" }}
       htmlFor="password" className="pass1">Password  </label>
       <input
       className="pass"
@@ -111,9 +109,7 @@ function Login(){
       ) : null}
       <br />
 
-      {/* <Link to="/menu" className="login-login"> */}
       <button className="login-login" type="submit">Log-in</button>
-      {/* </Link> */}
     <p className="or-login">or </p>
       <Link to="/register" className="register">
       <button className="register" type="submit">Register</button>
