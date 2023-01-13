@@ -62,7 +62,7 @@ return (
   <br/>
 
   <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Click here! {onsubmit=(onSubmit)}
+  Click here! {onSubmit=(onSubmit)}
 </button>
 </div>
 </div>

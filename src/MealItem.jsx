@@ -1,7 +1,6 @@
 import './style.css';
 import React from "react";
-import { Button, Form, ButtonGroup, Modal, Collapse } from "react-bootstrap";
-import {button} from "bootstrap"
+import { Button, Form, ButtonGroup, Modal } from "react-bootstrap";
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -117,21 +116,22 @@ useEffect((value)=> {
 // }
 // }
 
-const onSubmit = (value) =>{
-  axios({
-    method: 'post',
-    url: `https://api-bootcamp.do.dibimbing.id/api/v1/create-food`,
-    value,
-    headers:{
-      apiKey:`${process.env.REACT_APP_APIKEY}`,
-    }
-  })
-  .then(function(response){
-    console.log(response)
-    setData(response.data.data)
-  })
+// const onSubmit = (value) =>{
+//   axios({
+//     method: 'post',
+//     url: `https://api-bootcamp.do.dibimbing.id/api/v1/create-food`,
+//     value,
+//     headers:{
+//       apiKey:`${process.env.REACT_APP_APIKEY}`,
+//     }
+//   })
+//   .then(function(response){
+//     console.log(response)
+//     setData(response.data.data)
+//   })
 
-}});
+// }
+});
 
 
     return(
@@ -172,9 +172,9 @@ const onSubmit = (value) =>{
   Hey! We're short of menu! Add one!
   <br/>
 
-  <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  <Button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
   Click here!
-</button>
+</Button>
 
 <Formik
 initialValues={{
@@ -196,7 +196,7 @@ initialValues={{
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">Add Food</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <Button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></Button>
       </div>
       <div class="modal-body">
       <p>Name:</p>
@@ -210,8 +210,8 @@ initialValues={{
 
       </div>
       <div class="modal-footer ">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button"  class="btn btn-primary" >Save changes</button>
+        <Button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</Button>
+        <Button type="button"  class="btn btn-primary" >Save changes</Button>
       </div>
     </div>
   </div>
@@ -232,7 +232,7 @@ initialValues={{
         <div className="card-body">
           <h5>{item.name}</h5>
           <p className="desc">{item.description}</p>
-          <a className="btn btn-light"><AiFillStar/>{item.rating}</a>
+          <p className="btn btn-light"><AiFillStar/>{item.rating}</p>
           <p><AiTwotoneEdit/>{item.ingredients}</p>
           <div className=''>
           <td><ButtonGroup aria-label="Action">
