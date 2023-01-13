@@ -10,7 +10,7 @@ import * as Yup from "yup"
 import { Formik } from 'formik';
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
 
-const API_URL="https://api-bootcamp.do.dibimbing.id/api/v1/foods"
+// const API_URL="https://api-bootcamp.do.dibimbing.id/api/v1/foods"
 
 function MealItem() {
 const [data, setData] = useState([]);
@@ -40,83 +40,98 @@ useEffect((value)=> {
         setData(response.data.data)
     });
 
-    const handleEdit = () => {
-      axios ({
-        method: 'post',
-        url: `https://api-bootcamp.do.dibimbing.id/api/v1/create-food`,
-        data: {
-          name: nameEdit,
-          ingredients: IngredientsEdit,
-          description: descriptionEdit,
-          image: imageEdit,
-          rating: RatingEdit
-        }
-      })
-      .then(function (response) {
-        handleClose()
-        setNameEdit('')
-        setIngredientsEdit('')
-        setDescriptionEdit('')
-        setImageEdit('')
-        setRatingEdit('')
-        MealItem()
-      });
-    }
+    // const handleEdit = () => {
+    //   axios ({
+    //     method: 'post',
+    //     url: `https://api-bootcamp.do.dibimbing.id/api/v1/create-food`,
+    //     data: {
+    //       name: nameEdit,
+    //       ingredients: IngredientsEdit,
+    //       description: descriptionEdit,
+    //       image: imageEdit,
+    //       rating: RatingEdit
+    //     }
+    //   })
+    //   .then(function (response) {
+    //     handleClose()
+    //     setNameEdit('')
+    //     setIngredientsEdit('')
+    //     setDescriptionEdit('')
+    //     setImageEdit('')
+    //     setRatingEdit('')
+    //     MealItem()
+    //   });
+    // }
 
-const handleDelete = (id) => {
-    if (window.confirm(`Delete ID ${id}?`)) {
-    axios ({
-      method: 'del',
-      url: `https://api-bootcamp.do.dibimbing.id/api/v1/delete-food/efdd307b-1d9c-4a47-9d40-d3720708711f`,})
-    .then(function (response) {
-      MealItem()
-    });
-  }
-  }
+// const handleDelete = (id) => {
+//     if (window.confirm(`Delete ID ${id}?`)) {
+//     axios ({
+//       method: 'del',
+//       url: `https://api-bootcamp.do.dibimbing.id/api/v1/delete-food/efdd307b-1d9c-4a47-9d40-d3720708711f`,})
+//     .then(function (response) {
+//       MealItem()
+//     });
+//   }
+//   }
 
 
 
-const handleLike= (id, like) =>{
-if (!like){
+// const handleLike= (id, like) =>{
+// if (!like){
+//   axios({
+//     method:"post",
+//     url:"https://api-bootcamp.do.dibimbing.id/api/v1/like",
+//     data:{
+//       foodId: id,
+//     },
+//     headers:{
+//       apiKey: `${process.env.REACT_APP_APIKEY}`
+//     }
+//   })
+//   .then((response) => {
+//     console.log(response);
+//     MealItem();
+//   })
+//   .catch((error) => {
+//     console.log(error);
+//   });
+// }
+// else{
+//   axios({
+//     method:"post",
+//     url:"https://api-bootcamp.do.dibimbing.id/api/v1/unlike",
+//     data:{
+//       foodId: id,
+//     },
+//     headers:{
+//       apiKey: `${process.env.REACT_APP_APIKEY}`
+//     }
+//   })
+//   .then((response) => {
+//     console.log(response);
+//     MealItem();
+//   })
+//   .catch((error) => {
+//     console.log(error);
+//   });
+// }
+// }
+
+const onSubmit = (value) =>{
   axios({
-    method:"post",
-    url:"https://api-bootcamp.do.dibimbing.id/api/v1/like",
-    data:{
-      foodId: id,
-    },
+    method: 'post',
+    url: `https://api-bootcamp.do.dibimbing.id/api/v1/create-food`,
+    value,
     headers:{
-      apiKey: `${process.env.REACT_APP_APIKEY}`
+      apiKey:`${process.env.REACT_APP_APIKEY}`,
     }
   })
-  .then((response) => {
-    console.log(response);
-    MealItem();
+  .then(function(response){
+    console.log(response)
+    setData(response.data.data)
   })
-  .catch((error) => {
-    console.log(error);
-  });
-}
-else{
-  axios({
-    method:"post",
-    url:"https://api-bootcamp.do.dibimbing.id/api/v1/unlike",
-    data:{
-      foodId: id,
-    },
-    headers:{
-      apiKey: `${process.env.REACT_APP_APIKEY}`
-    }
-  })
-  .then((response) => {
-    console.log(response);
-    MealItem();
-  })
-  .catch((error) => {
-    console.log(error);
-  });
-}
-}
-}, []);
+
+}});
 
 
     return(
@@ -196,7 +211,7 @@ initialValues={{
       </div>
       <div class="modal-footer ">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button"  class="btn btn-primary">Save changes</button>
+        <button type="button"  class="btn btn-primary" >Save changes</button>
       </div>
     </div>
   </div>
