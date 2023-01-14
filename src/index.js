@@ -6,7 +6,7 @@ import Login from './Login';
 import MealItem from './MealItem';
 import Register from './register'
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
-import Registertest from './registertest';
+// import Registertest from './registertest';
 // import AddFood from './addFood';
 
 const router = createBrowserRouter([
@@ -49,12 +49,12 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element:<Register/>
-  },
-
-  {
-    path: "/test",
-    element:<Registertest/>
   }
+
+  // {
+  //   path: "/test",
+  //   element:<Registertest/>
+  // }
 
   // {
   // path: "/addFood",
