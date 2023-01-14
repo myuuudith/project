@@ -2,50 +2,20 @@ import React from "react";
 import Axios from "axios";
 import { useFormik } from "formik";
 import * as Yup from 'yup';
-import "./login.css";
 import { Link } from "react-router-dom";
+import "./login.css";
 
-function Register(){
-
-  const onSubmit = (value =>{
-      Axios({
-        method: "post",
-        url: "https://api-bootcamp.do.dibimbing.id/api/v1/register",
-        data: {
-          name: value.name,
-          email: value.email,
-          password: value.password,
-          passwordRepeat: value.passwordRepeat,
-          role: value.role,
-          profilePicture: value.profilePicture,
-          phoneNumber: value.phoneNumber,
-        },
-        headers: {
-          apiKey: process.env.REACT_APP_APIKEY,
-        },
-      })
-        .then((response) => {
-          console.log(response);
-          alert(
-           "Wohoo welcome to the club!"
-          );
-          window.location.href = "/login";
-        })
-        .catch((error) => {
-          console.log(error);
-          alert(`${error.response.data.message}`);
-        });
-  })
-
+function Regist(){
+  // const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       name: '',
-        email: '',
-        password: '',
-        confirmPass: '',
-        role: '',
-        profPict: '',
-        phoneNum: '',
+      email: '',
+      password: '',
+      passwordRepeat: '',
+      role: '',
+      profilePicture: '',
+      phoneNumber: '',
     }, 
     validationSchema: Yup.object({
       name: Yup.string()
@@ -55,8 +25,8 @@ function Register(){
         .required("Required"),
       password: Yup.string()
         .matches(
-          // /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{6,20}^/,
-          // "Must include uppercase, lowecase, a number and special character."
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{6,10}^/,
+          "Must include uppercase, lowecase, a number and special character."
         )
         .required("Required"),
       confirmPass: Yup.string()
@@ -89,9 +59,11 @@ function Register(){
     },
   });
 
-    return(
-        <>
-        <nav className="navbar">
+return(
+<>
+        {/* <----REGISTLINEEEE-----> */}
+        <div>
+   <nav className="navbar">
         <h3 className="home">Foodies</h3>
         <ul className="nav-links">
         
@@ -109,17 +81,19 @@ function Register(){
         </ul>
       </nav>
 
-      {/* --------------LOGIN AREA-------------- */}
+      <div class="alert alert-warning card-register" role="alert">
+  <h4 class="alert-heading">Hey-hey-heyy</h4>
+  <p>Thank you for your contribution for make this website big and bigger! For better future from you and for others!</p>
+  <br/>
+</div>
 
       <div className="cover">
         <p className="text-area-f1">Register in this page!!</p><br/>
 
-      <div className="body-login">
+        <div className="body-login">
       <form onSubmit={formik.handleSubmit}>
-
       <p className="name-req">Name</p>
         <input
-        id="name"
         className="name-req"
         name="name"
         type="text"
@@ -159,7 +133,6 @@ function Register(){
       ) : null}
       <p className="pass-req-rep">Password Repeat</p>
       <input
-      id="confirmPass"
         className="pass-req-rep"
         name="confirmPass"
         type="password"
@@ -174,16 +147,13 @@ function Register(){
         />
         
       <p className="prof-req"
-      id="profPict"
-      name="profPict">
-        Profile Picture</p>
+      name="profPict">Profile Picture</p>
         <div class="mb-3">
   <input className="form-control" type="file" id="formFile"/>
 </div>
 
       <p className="phone-req">Phone number</p>
       <input
-      id="phoneNum"
         className="phone-req"
         name="phoneNum"
         type="text"
@@ -191,14 +161,69 @@ function Register(){
         />
       <br />
       
+     
       <button className="register" type="submit">Submit</button>
-      </form>
-    </div>
-    </div>
-        </>
-    )
-}
+    
 
+</form>
+</div></div></div>
 
+        {/* <Form>
+        <div className="body-login">
+        <p className="name-req">Name</p>
+        <input
+        className="name-req"
+        name="name"
+        type="text"
+        placeholder="Name"
+        />
+      <p className="Email1">Email</p>
+      <input
+      className="Email1"
+        id="Email"
+        name="Email"
+        type="Email"
+        placeholder="Email"
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+      />
+      <p className="pass-req-rep">Password Repeat</p>
+      <input
+        className="pass-req-rep"
+        name="pass-req-rep"
+        type="password"
+        placeholder="password"
+        />
+      <p className="role-req">Role</p>
+      <input
+        className="role-req"
+        name="role-req"
+        type="text"
+        placeholder="..."
+        />
+      <p className="prof-req">Profile Picture</p>
+        <div class="mb-3">
+  <input className="form-control" type="file" id="formFile"/>
+</div>
+      <p className="phone-req">Phone number</p>
+      <input
+        className="phone-req"
+        name="phone-req"
+        type="text"
+        placeholder="Phone number"
+        />
+      <br />
 
-export default Register;
+      
+      <button className="register" type="submit">Submit</button>
+        </div>
+        </Form>
+        </div>
+        </div> */}
+       {/* </Formik>
+     </section> */}
+    </>
+    ) 
+   }
+
+export default Regist;

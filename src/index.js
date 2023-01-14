@@ -7,7 +7,7 @@ import MealItem from './MealItem';
 import Register from './register'
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
 import Registertest from './registertest';
-import AddFood from './addFood';
+// import AddFood from './addFood';
 
 const router = createBrowserRouter([
   {
@@ -54,12 +54,12 @@ const router = createBrowserRouter([
   {
     path: "/test",
     element:<Registertest/>
-  },
-
-  {
-  path: "/addFood",
-  element: <AddFood/>
   }
+
+  // {
+  // path: "/addFood",
+  // element: <AddFood/>
+  // }
 
 ]);
 const root = ReactDOM.createRoot(document.getElementById('root'));
