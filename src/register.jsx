@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import Axios from "axios";
 import { useFormik } from "formik";
 import * as Yup from 'yup';
-// import { useNavigate } from "react-router-dom";
 import "./login.css";
 import { Link } from "react-router-dom";
 
-function Login(){
+function Register(){
 
   const onSubmit = (value =>{
       Axios({
@@ -43,10 +42,10 @@ function Login(){
       name: '',
         email: '',
         password: '',
-        passwordRepeat: '',
+        confirmPass: '',
         role: '',
-        profilePicture: '',
-        phoneNumber: '',
+        profPict: '',
+        phoneNum: '',
     }, 
     validationSchema: Yup.object({
       name: Yup.string()
@@ -56,8 +55,8 @@ function Login(){
         .required("Required"),
       password: Yup.string()
         .matches(
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{6,10}^/,
-          "Must include uppercase, lowecase, a number and special character."
+          // /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{6,20}^/,
+          // "Must include uppercase, lowecase, a number and special character."
         )
         .required("Required"),
       confirmPass: Yup.string()
@@ -120,6 +119,7 @@ function Login(){
 
       <p className="name-req">Name</p>
         <input
+        id="name"
         className="name-req"
         name="name"
         type="text"
@@ -159,6 +159,7 @@ function Login(){
       ) : null}
       <p className="pass-req-rep">Password Repeat</p>
       <input
+      id="confirmPass"
         className="pass-req-rep"
         name="confirmPass"
         type="password"
@@ -173,13 +174,16 @@ function Login(){
         />
         
       <p className="prof-req"
-      name="profPict">Profile Picture</p>
+      id="profPict"
+      name="profPict">
+        Profile Picture</p>
         <div class="mb-3">
   <input className="form-control" type="file" id="formFile"/>
 </div>
 
       <p className="phone-req">Phone number</p>
       <input
+      id="phoneNum"
         className="phone-req"
         name="phoneNum"
         type="text"
@@ -187,9 +191,7 @@ function Login(){
         />
       <br />
       
-      <Link to="/register" className="register">
       <button className="register" type="submit">Submit</button>
-      </Link>
       </form>
     </div>
     </div>
@@ -199,4 +201,4 @@ function Login(){
 
 
 
-export default Login;
+export default Register;
