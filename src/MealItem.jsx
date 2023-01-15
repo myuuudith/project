@@ -34,7 +34,6 @@ const handleClose = () => setShow(false);
 const handleShow = (id) => setShow(id);
 
 useEffect((value)=> {
-  const getData = () =>{}
     axios({
         method: 'get',
         url: 'https://api-bootcamp.do.dibimbing.id/api/v1/foods',
