@@ -1,436 +1,321 @@
-// import React from "react";
-// import Axios from "axios";
-// import { useFormik } from "formik";
-// import * as Yup from 'yup';
-// import { Link } from "react-router-dom";
-// import "./login.css";
+import './style.css';
+import React from "react";
+import { Form, ButtonGroup, Modal } from "react-bootstrap";
+import Button from 'react-bootstrap/Button';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { AiFillStar, AiTwotoneEdit } from "react-icons/ai";
+import { FcLike } from "react-icons/fc";
+import * as Yup from "yup"
+import { Formik } from 'formik';
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
 
-// function Regist(){
-//   // const navigate = useNavigate();
-//   const formik = useFormik({
-//     initialValues: {
-//       name: '',
-//       email: '',
-//       password: '',
-//       passwordRepeat: '',
-//       role: '',
-//       profilePicture: '',
-//       phoneNumber: '',
-//     }, 
-//     validationSchema: Yup.object({
-//       name: Yup.string()
-//         .required("Required"),
-//       email: Yup.string()
-//         .email("Invalid email address")
-//         .required("Required"),
-//       password: Yup.string()
-//         .matches(
-//           /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{6,10}^/,
-//           "Must include uppercase, lowecase, a number and special character."
-//         )
-//         .required("Required"),
-//       confirmPass: Yup.string()
-//         .oneOf([Yup.ref("password")], "Your password doesn't match")
-//         .required("Required"),
-//       profPict: Yup.string()
-//       .required("Required"),
-//       phoneNum: Yup.string()
-//         .required("Required"),
-//     }),
-//     onSubmit: (values) => {
-//       Axios.post(`${process.env.REACT_APP_BASEURL}/api/v1/register`, 
-//       values,{
-//         headers : {          
-//           apiKey: `${process.env.REACT_APP_APIKEY}`,
-//         }
-//       })
-//       .then ((res) => {
-//         const token = res.data.token;
-//         console.log(token);
-//         localStorage.setItem("token", token);
+// const BASE_URL = 'https://api-bootcamp.do.dibimbing.id'
+const FOOD_ID = 'efdd307b-1d9c-4a47-9d40-d3720708711f'
 
-//         const name = res.data.user.name;
-//         localStorage.setItem("name", name);
-//       })
-//       .catch((err) =>{
-//         const showError = err.response.data.status_message;
-//         alert(showError);
-//       });
-//     },
-//   });
+function MealItem() {
+const [data, setData] = useState([]);
 
-// return(
-// <>
-//         {/* <----REGISTLINEEEE-----> */}
-//         <div>
-//    <nav className="navbar">
-//         <h3 className="home">Foodies</h3>
-//         <ul className="nav-links">
+const [name, setName] = useState('');
+const [Ingredients, setIngredients] = useState(1);
+const [description, setDescription] = useState();
+const [image, setImage] = useState();
+const [Rating, setRating] = useState();
+
+const [nameEdit, setNameEdit] = useState('');
+const [IngredientsEdit, setIngredientsEdit] = useState(1);
+const [descriptionEdit, setDescriptionEdit] = useState();
+const [imageEdit, setImageEdit] = useState();
+const [RatingEdit, setRatingEdit] = useState();
+const [show, setShow] = useState(false);
+
+const handleClose = () => setShow(false);
+const handleShow = (id) => setShow(id);
+
+useEffect((value)=> {
+  const getData = () =>{}
+    axios({
+        method: 'get',
+        url: 'https://api-bootcamp.do.dibimbing.id/api/v1/foods',
+        value,
+          headers : {          
+            apiKey: `${process.env.REACT_APP_APIKEY}`,
+          }
+    })
+    .then(function(response){
+        console.log(response)
+        setData(response.data.data)
+    })
+});
+
+const getData =(value)=>{
+  axios({
+    method: 'get',
+    url: `https://api-bootcamp.do.dibimbing.id/api/v1/foods`,
+    value,
+    headers : {          
+      apiKey: `${process.env.REACT_APP_APIKEY}`,
+    }
+})
+.then(function(response){
+    console.log(response)
+    setData(response.data.data)
+})
+}
+
+const handleAdd = (e) => {
+  e.preventDefault()
+  axios ({
+    method: 'post',
+    url: 'https://api-bootcamp.do.dibimbing.id/api/v1/create-food',
+    data: {
+    name: name,
+    ingredients: Ingredients,
+    description: description,
+    image: image,
+    rating: Rating
+    }
+  })
+  .then(function (response) {
+    // console.log(response);
+    setName('')
+    setIngredients('')
+    setDescription('')
+    setImage('')
+    setRating('')
+    getData()
+  });
+}
+
+
+const handleDelete = (id, value) => {
+  if (window.confirm(`Delete ID ${id}?`)) {
+    axios({
+      method: 'delete',
+      url: `https://api-bootcamp.do.dibimbing.id/api/v1/delete-food/${FOOD_ID}`,
+      value,
+        headers : {          
+          apiKey: `${process.env.REACT_APP_APIKEY}`,
+        }
+  })
+  .then(function(response){
+      console.log(response)
+      setData(response.data.data)
+  })
+}
+}
+
+// useEffect((value) => {
+//   MealItem()
+//  }, []);
+
+    return(
+        <>
+
+  <div>
+    <nav className="navbar">
+        <h3 className="home">Foodies</h3>
+        <ul className="nav-links">
         
-//         <Link to="/home" className="home">
-//             <li>Home</li>
-//           </Link>
+        <Link to="/home" className="home">
+            <li>Home</li>
+          </Link>
         
-//           <Link to="/menu" className="menu">
-//             <li>Menu</li>
-//           </Link>
+          <Link to="/menu" className="menu">
+            <li>Menu</li>
+          </Link>
 
-//           <Link to="/login" className="login">
-//             <li>Login</li>
-//           </Link>
-//         </ul>
-//       </nav>
-
-//       <div class="alert alert-warning card-register" role="alert">
-//   <h4 class="alert-heading">Hey-hey-heyy</h4>
-//   <p>Thank you for your contribution for make this website big and bigger! For better future from you and for others!</p>
-//   <br/>
-// </div>
-
-//       <div className="cover">
-//         <p className="text-area-f1">Register in this page!!</p><br/>
-
-//         <div className="body-login">
-//       <form onSubmit={formik.handleSubmit}>
-//       <p className="name-req">Name</p>
-//         <input
-//         className="name-req"
-//         name="name"
-//         type="text"
-//         placeholder="Name"
-//         />
-//       <p className="Email1">Email</p>
-//       <input
-//       className="Email1"
-//         id="email"
-//         name="email"
-//         type="email"
-//         placeholder="Email"
-//         onChange={formik.handleChange}
-//         onBlur={formik.handleBlur}
-//         value={formik.values.email}
-//       />
-//       {formik.touched.email && formik.errors.email ? (
-//         <div style={{ color: "red" }}>{formik.errors.email}</div>
-//       ) : null}
-      
-//       <br />
-
-//       <label 
-//       htmlFor="password" className="pass1">Password  </label>
-//       <input
-//       className="pass1"
-//         id="password"
-//         name="password"
-//         type="password"
-//         placeholder="Password"
-//         onChange={formik.handleChange}
-//         onBlur={formik.handleBlur}
-//         value={formik.values.password}
-//       />
-//       {formik.touched.password && formik.errors.password ? (
-//         <div>{formik.errors.password}</div>
-//       ) : null}
-//       <p className="pass-req-rep">Password Repeat</p>
-//       <input
-//         className="pass-req-rep"
-//         name="confirmPass"
-//         type="password"
-//         placeholder="password"
-//         />
-//       <p className="role-req">Role</p>
-//       <input
-//         className="role-req"
-//         name="role-req"
-//         type="text"
-//         placeholder="..."
-//         />
-        
-//       <p className="prof-req"
-//       name="profPict">Profile Picture</p>
-//         <div class="mb-3">
-//   <input className="form-control" type="file" id="formFile"/>
-// </div>
-
-//       <p className="phone-req">Phone number</p>
-//       <input
-//         className="phone-req"
-//         name="phoneNum"
-//         type="text"
-//         placeholder="Phone number"
-//         />
-//       <br />
-      
-     
-//       <button className="register" type="submit">Submit</button>
-    
-
-// </form>
-// </div></div></div>
-
-        {/* <Form>
-        <div className="body-login">
-        <p className="name-req">Name</p>
-        <input
-        className="name-req"
-        name="name"
-        type="text"
-        placeholder="Name"
-        />
-      <p className="Email1">Email</p>
-      <input
-      className="Email1"
-        id="Email"
-        name="Email"
-        type="Email"
-        placeholder="Email"
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-      />
-      <p className="pass-req-rep">Password Repeat</p>
-      <input
-        className="pass-req-rep"
-        name="pass-req-rep"
-        type="password"
-        placeholder="password"
-        />
-      <p className="role-req">Role</p>
-      <input
-        className="role-req"
-        name="role-req"
-        type="text"
-        placeholder="..."
-        />
-      <p className="prof-req">Profile Picture</p>
-        <div class="mb-3">
-  <input className="form-control" type="file" id="formFile"/>
+          <Link to="/login" className="login">
+            <li>Login</li>
+          </Link>
+          
+        </ul>
+      </nav>
+      <div class="card text-center">
+  <div class="card-header">
+    About Foodies
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">A new Website to help strangers</h5>
+    <p class="card-text">Foodies is more like a home to new people.<br/>With support from everyone of you, we can provide information from each of you to share and make a new memory.<br/>Let start from foodies</p>
+    <a href="/login" class="btn btn-dark">Enter the world</a>
+  </div>
 </div>
-      <p className="phone-req">Phone number</p>
-      <input
-        className="phone-req"
-        name="phone-req"
-        type="text"
-        placeholder="Phone number"
-        />
-      <br />
+            <div class="alert alert-warning card-menu" role="alert">
+  Hey! We're short of menu! Add one!
+  
+  <br/>
+    <Form onSubmit={handleAdd}>
+      <Form.Group className="mb-3" controlId="formBasicName">
+        <Form.Label>Enter Food name</Form.Label>
+        <Form.Control value={name} name="name" type="text" onChange={(e) => setName(e.target.value)} placeholder="Food Name" />
+      </Form.Group>
 
-      
-      <button className="register" type="submit">Submit</button>
+      <Form.Group className="mb-3" controlId="formBasicIngridients">
+        <Form.Label>Ingredients</Form.Label>
+        <Form.Control value={Ingredients} name="Ingridients" type="text" onChange={(e) => setIngredients(e.target.value)}placeholder="Enter Food Ingredients" />
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="formBasicDescription">
+        <Form.Label>Description</Form.Label>
+        <Form.Control value={description} name="description" type="text" onChange={(e) => setDescription(e.target.value)}placeholder="Enter Food Description" />
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="formBasicImage">
+        <Form.Label>Image</Form.Label>
+        <Form.Control value={image} name="image" type="text" onChange={(e) => setImage(e.target.value)}placeholder="Enter Url Image" />
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="formBasicRating">
+        <Form.Label>Rating</Form.Label>
+        <Form.Control value={Rating} name="Rating" type="text" onChange={(e) => setRating(e.target.value)}placeholder="Give your Rating" />
+      </Form.Group>
+
+      <Button variant="primary" type="submit">
+        Submit
+      </Button>
+
+      </Form>
+
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Food</h1>
+        <Button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></Button>
+      </div>
+      <div class="modal-body">
+      <p>Name:</p>
+      <input class="form-control form-control-sm" type="text" placeholder="" aria-label=".form-control-sm example"/>
+      <p>Description:</p>
+      <input class="form-control form-control-sm" type="text" placeholder="" aria-label=".form-control-sm example"/>
+      <p>ImageUrl:</p>
+      <input class="form-control form-control-sm" type="text" placeholder="" aria-label=".form-control-sm example"/>
+      <p>Ingridients:</p>
+      <input class="form-control form-control-sm" type="text" placeholder="" aria-label=".form-control-sm example"/>
+
+      </div>
+      <div class="modal-footer ">
+        <Button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</Button>
+        <Button type="button"  class="btn btn-primary" >Save changes</Button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{/* <Formik
+initialValues={{
+          name: "",
+          description: "",
+          imageUrl: "",
+          ingredients: [""],
+        }}
+        validationSchema={Yup.object({
+          name: Yup.string().required("Required"),
+          description: Yup.string().required("Required"),
+          imageUrl: Yup.string().required("Required"),
+        })}
+        // onSubmit={onSubmit}
+        >
+      </Formik> */}
+
+</div>
+
+
+    <section className='py-4 py-lg-5 container'>
+      <div className='row justify-content-center align-item-center'>
+      {data.map((item, index) => {
+        
+      return <React.Fragment >
+<div className="container text-center">
+    <div className="row">
+      <div className="col-md-6 mx-0 mb-4 item11" key={index}>
+      <div className="card">
+        <img src={item.imageUrl} className="card-img-top" alt={item.name}/>
+        <div className="card-body">
+          <h5>{item.name}</h5>
+          <p className="desc">{item.description}</p>
+          <p className="btn btn-light"><AiFillStar/>{item.rating}</p>
+          <p className='btn btn-dark'><FcLike/>{item.like}</p>
+          <p><AiTwotoneEdit/>{item.ingredients}</p>
+          <div className=''>
+          <td>
+            <ButtonGroup aria-label="Action">
+      <Button size="sm" variant="light" className='edit-meal1' 
+      onClick={() => handleShow(item.id)}
+      >Edit your menu</Button>
+    </ButtonGroup>
+    <ButtonGroup aria-label="Action">
+      <Button size="sm" variant="danger" className='edit-meal1'
+      onClick={() => handleDelete(item.id)}>
+        delete this food
+      </Button>
+    </ButtonGroup>
+    </td>
+          </div>
         </div>
-        </Form>
-        </div>
-        </div> */}
-       {/* </Formik>
-     </section> */}
-//     </>
-//     ) 
-//    }
-
-// export default Regist;
+      </div>
+    </div>
+</div>
+</div>
+</React.Fragment>
+})}
+      </div>
+    </section>
 
 
-// -------------------------------------
-// import React from "react";
-// import Axios from "axios";
-// import { useFormik } from "formik";
-// import * as Yup from 'yup';
-// import "./login.css";
-// import { Link } from "react-router-dom";
 
-// function Register(){
+<div className='edit-meal'>
+{/* ---------------------------EDIT */}
 
-//   const onSubmit = (value =>{
-//       Axios({
-//         method: "post",
-//         url: "https://api-bootcamp.do.dibimbing.id/api/v1/register",
-//         data: {
-//           name: value.name,
-//           email: value.email,
-//           password: value.password,
-//           passwordRepeat: value.passwordRepeat,
-//           role: value.role,
-//           profilePicture: value.profilePicture,
-//           phoneNumber: value.phoneNumber,
-//         },
-//         headers: {
-//           apiKey: process.env.REACT_APP_APIKEY,
-//         },
-//       })
-//         .then((response) => {
-//           console.log(response);
-//           alert(
-//            "Wohoo welcome to the club!"
-//           );
-//           window.location.href = "/login";
-//         })
-//         .catch((error) => {
-//           console.log(error);
-//           alert(`${error.response.data.message}`);
-//         });
-//   })
+    <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3" controlId="formBasicName">
+              <Form.Label>Name</Form.Label>
+              <Form.Control value={nameEdit} type="text" onChange={(e) => setNameEdit(e.target.value)} placeholder="Enter Food Name" />
+            </Form.Group>
 
-//   const formik = useFormik({
-//     initialValues: {
-//       name: '',
-//         email: '',
-//         password: '',
-//         confirmPass: '',
-//         role: '',
-//         profPict: '',
-//         phoneNum: '',
-//     }, 
-//     validationSchema: Yup.object({
-//       name: Yup.string()
-//         .required("Required"),
-//       email: Yup.string()
-//         .email("Invalid email address")
-//         .required("Required"),
-//       password: Yup.string()
-//         .matches(
-//           // /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{6,20}^/,
-//           // "Must include uppercase, lowecase, a number and special character."
-//         )
-//         .required("Required"),
-//       confirmPass: Yup.string()
-//         .oneOf([Yup.ref("password")], "Your password doesn't match")
-//         .required("Required"),
-//       profPict: Yup.string()
-//       .required("Required"),
-//       phoneNum: Yup.string()
-//         .required("Required"),
-//     }),
-//     onSubmit: (values) => {
-//       Axios.post(`${process.env.REACT_APP_BASEURL}/api/v1/register`, 
-//       values,{
-//         headers : {          
-//           apiKey: `${process.env.REACT_APP_APIKEY}`,
-//         }
-//       })
-//       .then ((res) => {
-//         const token = res.data.token;
-//         console.log(token);
-//         localStorage.setItem("token", token);
+            <Form.Group className="mb-3" controlId="formBasicDescription">
+              <Form.Label>Description</Form.Label>
+              <Form.Control value={descriptionEdit} type="text" onChange={(e) => setDescriptionEdit(e.target.value)} placeholder="Enter Description" />
+            </Form.Group>
 
-//         const name = res.data.user.name;
-//         localStorage.setItem("name", name);
-//       })
-//       .catch((err) =>{
-//         const showError = err.response.data.status_message;
-//         alert(showError);
-//       });
-//     },
-//   });
+            <Form.Group className="mb-3" controlId="formBasicImage">
+              <Form.Label>Image</Form.Label>
+              <Form.Control value={imageEdit} type="text" onChange={(e) => setImageEdit(e.target.value)} placeholder="Enter Image" />
+            </Form.Group>
 
-//     return(
-//         <>
-//         <nav className="navbar">
-//         <h3 className="home">Foodies</h3>
-//         <ul className="nav-links">
-        
-//         <Link to="/home" className="home">
-//             <li>Home</li>
-//           </Link>
-        
-//           <Link to="/menu" className="menu">
-//             <li>Menu</li>
-//           </Link>
+            <Form.Group className="mb-3" controlId="formBasicIngridients">
+              <Form.Label>Ingredients</Form.Label>
+              <Form.Control value={IngredientsEdit} type="text" onChange={(e) => setIngredientsEdit(e.target.value)} placeholder="Enter Ingridients" />
+            </Form.Group>
 
-//           <Link to="/login" className="login">
-//             <li>Login</li>
-//           </Link>
-//         </ul>
-//       </nav>
+            <Form.Group className="mb-3" controlId="formBasicRating">
+              <Form.Label>Rating</Form.Label>
+              <Form.Control value={RatingEdit} type="text" onChange={(e) => setRatingEdit(e.target.value)} placeholder="Enter Rating" />
+            </Form.Group>
+            
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary">
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      </div>
+      </div>
+        </>
+    );
+  }
 
-//       {/* --------------LOGIN AREA-------------- */}
-
-//       <div className="cover">
-//         <p className="text-area-f1">Register in this page!!</p><br/>
-
-//       <div className="body-login">
-//       <form onSubmit={formik.handleSubmit}>
-
-//       <p className="name-req">Name</p>
-//         <input
-//         id="name"
-//         className="name-req"
-//         name="name"
-//         type="text"
-//         placeholder="Name"
-//         />
-//       <p className="Email1">Email</p>
-//       <input
-//       className="Email1"
-//         id="email"
-//         name="email"
-//         type="email"
-//         placeholder="Email"
-//         onChange={formik.handleChange}
-//         onBlur={formik.handleBlur}
-//         value={formik.values.email}
-//       />
-//       {formik.touched.email && formik.errors.email ? (
-//         <div style={{ color: "red" }}>{formik.errors.email}</div>
-//       ) : null}
-      
-//       <br />
-
-//       <label 
-//       htmlFor="password" className="pass1">Password  </label>
-//       <input
-//       className="pass1"
-//         id="password"
-//         name="password"
-//         type="password"
-//         placeholder="Password"
-//         onChange={formik.handleChange}
-//         onBlur={formik.handleBlur}
-//         value={formik.values.password}
-//       />
-//       {formik.touched.password && formik.errors.password ? (
-//         <div>{formik.errors.password}</div>
-//       ) : null}
-//       <p className="pass-req-rep">Password Repeat</p>
-//       <input
-//       id="confirmPass"
-//         className="pass-req-rep"
-//         name="confirmPass"
-//         type="password"
-//         placeholder="password"
-//         />
-//       <p className="role-req">Role</p>
-//       <input
-//         className="role-req"
-//         name="role-req"
-//         type="text"
-//         placeholder="..."
-//         />
-        
-//       <p className="prof-req"
-//       id="profPict"
-//       name="profPict">
-//         Profile Picture</p>
-//         <div class="mb-3">
-//   <input className="form-control" type="file" id="formFile"/>
-// </div>
-
-//       <p className="phone-req">Phone number</p>
-//       <input
-//       id="phoneNum"
-//         className="phone-req"
-//         name="phoneNum"
-//         type="text"
-//         placeholder="Phone number"
-//         />
-//       <br />
-      
-//       <button className="register" type="submit">Submit</button>
-//       </form>
-//     </div>
-//     </div>
-//         </>
-//     )
 // }
-
-
-
-// export default Register;
+export default MealItem;

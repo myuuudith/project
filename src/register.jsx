@@ -25,8 +25,6 @@ function Regist(){
         .required("Required"),
       password: Yup.string()
         .matches(
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{6,10}^/,
-          "Must include uppercase, lowecase, a number and special character."
         )
         .required("Required"),
       confirmPass: Yup.string()
@@ -51,6 +49,9 @@ function Regist(){
 
         const name = res.data.user.name;
         localStorage.setItem("name", name);
+
+        const email = res.data.user.email;
+        localStorage.setItem("email", email);
       })
       .catch((err) =>{
         const showError = err.response.data.status_message;
@@ -131,6 +132,8 @@ return(
       {formik.touched.password && formik.errors.password ? (
         <div>{formik.errors.password}</div>
       ) : null}
+
+
       <p className="pass-req-rep">Password Repeat</p>
       <input
         className="pass-req-rep"
@@ -168,60 +171,7 @@ return(
 </form>
 </div></div></div>
 
-        {/* <Form>
-        <div className="body-login">
-        <p className="name-req">Name</p>
-        <input
-        className="name-req"
-        name="name"
-        type="text"
-        placeholder="Name"
-        />
-      <p className="Email1">Email</p>
-      <input
-      className="Email1"
-        id="Email"
-        name="Email"
-        type="Email"
-        placeholder="Email"
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-      />
-      <p className="pass-req-rep">Password Repeat</p>
-      <input
-        className="pass-req-rep"
-        name="pass-req-rep"
-        type="password"
-        placeholder="password"
-        />
-      <p className="role-req">Role</p>
-      <input
-        className="role-req"
-        name="role-req"
-        type="text"
-        placeholder="..."
-        />
-      <p className="prof-req">Profile Picture</p>
-        <div class="mb-3">
-  <input className="form-control" type="file" id="formFile"/>
-</div>
-      <p className="phone-req">Phone number</p>
-      <input
-        className="phone-req"
-        name="phone-req"
-        type="text"
-        placeholder="Phone number"
-        />
-      <br />
-
-      
-      <button className="register" type="submit">Submit</button>
-        </div>
-        </Form>
-        </div>
-        </div> */}
-       {/* </Formik>
-     </section> */}
+     
     </>
     ) 
    }

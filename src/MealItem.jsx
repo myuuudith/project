@@ -1,18 +1,27 @@
 import './style.css';
 import React from "react";
-import { Button, Form, ButtonGroup, Modal } from "react-bootstrap";
+import { Form, ButtonGroup, Modal } from "react-bootstrap";
+import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AiFillStar, AiTwotoneEdit } from "react-icons/ai";
-import * as Yup from "yup"
-import { Formik } from 'formik';
+import { FcLike } from "react-icons/fc";
+// import * as Yup from "yup"
+// import { Formik } from 'formik';
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
 
-// const API_URL="https://api-bootcamp.do.dibimbing.id/api/v1/foods"
+// const BASE_URL = 'https://api-bootcamp.do.dibimbing.id'
+const FOOD_ID = 'efdd307b-1d9c-4a47-9d40-d3720708711f'
 
 function MealItem() {
 const [data, setData] = useState([]);
+
+const [name, setName] = useState('');
+const [Ingredients, setIngredients] = useState(1);
+const [description, setDescription] = useState();
+const [image, setImage] = useState();
+const [Rating, setRating] = useState();
 
 const [nameEdit, setNameEdit] = useState('');
 const [IngredientsEdit, setIngredientsEdit] = useState(1);
@@ -24,8 +33,8 @@ const [show, setShow] = useState(false);
 const handleClose = () => setShow(false);
 const handleShow = (id) => setShow(id);
 
-// const MealItem = () =>{
 useEffect((value)=> {
+  const getData = () =>{}
     axios({
         method: 'get',
         url: 'https://api-bootcamp.do.dibimbing.id/api/v1/foods',
@@ -37,102 +46,69 @@ useEffect((value)=> {
     .then(function(response){
         console.log(response)
         setData(response.data.data)
-    });
-
-    // const handleEdit = () => {
-    //   axios ({
-    //     method: 'post',
-    //     url: `https://api-bootcamp.do.dibimbing.id/api/v1/create-food`,
-    //     data: {
-    //       name: nameEdit,
-    //       ingredients: IngredientsEdit,
-    //       description: descriptionEdit,
-    //       image: imageEdit,
-    //       rating: RatingEdit
-    //     }
-    //   })
-    //   .then(function (response) {
-    //     handleClose()
-    //     setNameEdit('')
-    //     setIngredientsEdit('')
-    //     setDescriptionEdit('')
-    //     setImageEdit('')
-    //     setRatingEdit('')
-    //     MealItem()
-    //   });
-    // }
-
-// const handleDelete = (id) => {
-//     if (window.confirm(`Delete ID ${id}?`)) {
-//     axios ({
-//       method: 'del',
-//       url: `https://api-bootcamp.do.dibimbing.id/api/v1/delete-food/efdd307b-1d9c-4a47-9d40-d3720708711f`,})
-//     .then(function (response) {
-//       MealItem()
-//     });
-//   }
-//   }
-
-
-
-// const handleLike= (id, like) =>{
-// if (!like){
-//   axios({
-//     method:"post",
-//     url:"https://api-bootcamp.do.dibimbing.id/api/v1/like",
-//     data:{
-//       foodId: id,
-//     },
-//     headers:{
-//       apiKey: `${process.env.REACT_APP_APIKEY}`
-//     }
-//   })
-//   .then((response) => {
-//     console.log(response);
-//     MealItem();
-//   })
-//   .catch((error) => {
-//     console.log(error);
-//   });
-// }
-// else{
-//   axios({
-//     method:"post",
-//     url:"https://api-bootcamp.do.dibimbing.id/api/v1/unlike",
-//     data:{
-//       foodId: id,
-//     },
-//     headers:{
-//       apiKey: `${process.env.REACT_APP_APIKEY}`
-//     }
-//   })
-//   .then((response) => {
-//     console.log(response);
-//     MealItem();
-//   })
-//   .catch((error) => {
-//     console.log(error);
-//   });
-// }
-// }
-
-// const onSubmit = (value) =>{
-//   axios({
-//     method: 'post',
-//     url: `https://api-bootcamp.do.dibimbing.id/api/v1/create-food`,
-//     value,
-//     headers:{
-//       apiKey:`${process.env.REACT_APP_APIKEY}`,
-//     }
-//   })
-//   .then(function(response){
-//     console.log(response)
-//     setData(response.data.data)
-//   })
-
-// }
+    })
 });
 
+const getData =(value)=>{
+  axios({
+    method: 'get',
+    url: `https://api-bootcamp.do.dibimbing.id/api/v1/foods`,
+    value,
+    headers : {          
+      apiKey: `${process.env.REACT_APP_APIKEY}`,
+    }
+})
+.then(function(response){
+    console.log(response)
+    setData(response.data.data)
+})
+}
+
+const handleAdd = (e) => {
+  e.preventDefault()
+  axios ({
+    method: 'post',
+    url: 'https://api-bootcamp.do.dibimbing.id/api/v1/create-food',
+    data: {
+    name: name,
+    ingredients: Ingredients,
+    description: description,
+    image: image,
+    rating: Rating
+    }
+  })
+  .then(function (response) {
+    // console.log(response);
+    setName('')
+    setIngredients('')
+    setDescription('')
+    setImage('')
+    setRating('')
+    getData()
+  });
+}
+
+
+const handleDelete = (id, value) => {
+  if (window.confirm(`Delete ID ${id}?`)) {
+    axios({
+      method: 'delete',
+      url: `https://api-bootcamp.do.dibimbing.id/api/v1/delete-food/${FOOD_ID}`,
+      value,
+        headers : {          
+          apiKey: `${process.env.REACT_APP_APIKEY}`,
+        }
+  })
+  .then(function(response){
+      console.log(response)
+      setData(response.data.data)
+  })
+}
+}
+
+// useEffect((value) => {
+//   MealItem()
+//  }, []);
 
     return(
         <>
@@ -153,8 +129,6 @@ useEffect((value)=> {
           <Link to="/login" className="login">
             <li>Login</li>
           </Link>
-
-         
           
         </ul>
       </nav>
@@ -170,28 +144,41 @@ useEffect((value)=> {
 </div>
             <div class="alert alert-warning card-menu" role="alert">
   Hey! We're short of menu! Add one!
+  
   <br/>
+    <Form onSubmit={handleAdd}>
+      <Form.Group className="mb-3" controlId="formBasicName">
+        <Form.Label>Enter Food name</Form.Label>
+        <Form.Control value={name} name="name" type="text" onChange={(e) => setName(e.target.value)} placeholder="Food Name" />
+      </Form.Group>
 
-  <Button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Click here!
-</Button>
+      <Form.Group className="mb-3" controlId="formBasicIngridients">
+        <Form.Label>Ingredients</Form.Label>
+        <Form.Control value={Ingredients} name="Ingridients" type="text" onChange={(e) => setIngredients(e.target.value)}placeholder="Enter Food Ingredients" />
+      </Form.Group>
 
-<Formik
-initialValues={{
-          name: "",
-          description: "",
-          imageUrl: "",
-          ingredients: [""],
-        }}
-        validationSchema={Yup.object({
-          name: Yup.string().required("Required"),
-          description: Yup.string().required("Required"),
-          imageUrl: Yup.string().required("Required"),
-        })}
-        // onSubmit={onSubmit}
-        >
-</Formik>
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <Form.Group className="mb-3" controlId="formBasicDescription">
+        <Form.Label>Description</Form.Label>
+        <Form.Control value={description} name="description" type="text" onChange={(e) => setDescription(e.target.value)}placeholder="Enter Food Description" />
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="formBasicImage">
+        <Form.Label>Image</Form.Label>
+        <Form.Control value={image} name="image" type="text" onChange={(e) => setImage(e.target.value)}placeholder="Enter Url Image" />
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="formBasicRating">
+        <Form.Label>Rating</Form.Label>
+        <Form.Control value={Rating} name="Rating" type="text" onChange={(e) => setRating(e.target.value)}placeholder="Give your Rating" />
+      </Form.Group>
+
+      <Button variant="primary" type="submit">
+        Submit
+      </Button>
+
+      </Form>
+
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -217,12 +204,29 @@ initialValues={{
   </div>
 </div>
 
+{/* <Formik
+initialValues={{
+          name: "",
+          description: "",
+          imageUrl: "",
+          ingredients: [""],
+        }}
+        validationSchema={Yup.object({
+          name: Yup.string().required("Required"),
+          description: Yup.string().required("Required"),
+          imageUrl: Yup.string().required("Required"),
+        })}
+        // onSubmit={onSubmit}
+        >
+      </Formik> */}
+
 </div>
 
 
     <section className='py-4 py-lg-5 container'>
       <div className='row justify-content-center align-item-center'>
       {data.map((item, index) => {
+        
       return <React.Fragment >
 <div className="container text-center">
     <div className="row">
@@ -233,10 +237,20 @@ initialValues={{
           <h5>{item.name}</h5>
           <p className="desc">{item.description}</p>
           <p className="btn btn-light"><AiFillStar/>{item.rating}</p>
+          <p className='btn btn-dark'><FcLike/>{item.like}</p>
           <p><AiTwotoneEdit/>{item.ingredients}</p>
           <div className=''>
-          <td><ButtonGroup aria-label="Action">
-      <Button size="sm" variant="light" className='edit-meal1' onClick={() => handleShow(item.id)}>Edit your menu</Button>
+          <td>
+            <ButtonGroup aria-label="Action">
+      <Button size="sm" variant="light" className='edit-meal1' 
+      onClick={() => handleShow(item.id)}
+      >Edit your menu</Button>
+    </ButtonGroup>
+    <ButtonGroup aria-label="Action">
+      <Button size="sm" variant="danger" className='edit-meal1'
+      onClick={() => handleDelete(item.id)}>
+        delete this food
+      </Button>
     </ButtonGroup>
     </td>
           </div>
