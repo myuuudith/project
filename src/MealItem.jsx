@@ -14,7 +14,7 @@ import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
 // import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 // const BASE_URL = 'https://api-bootcamp.do.dibimbing.id'
-const FOOD_ID = 'efdd307b-1d9c-4a47-9d40-d3720708711f'
+// const FOOD_ID = 'efdd307b-1d9c-4a47-9d40-d3720708711f'
 
 function MealItem() {
 const [data, setData] = useState([]);
