@@ -7,9 +7,11 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AiFillStar, AiTwotoneEdit } from "react-icons/ai";
 import { FcLike } from "react-icons/fc";
+import {FaBars} from "react-icons/fa";
 // import * as Yup from "yup"
 // import { Formik } from 'formik';
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
+// import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 // const BASE_URL = 'https://api-bootcamp.do.dibimbing.id'
 const FOOD_ID = 'efdd307b-1d9c-4a47-9d40-d3720708711f'
@@ -88,19 +90,22 @@ const handleAdd = (e) => {
 }
 
 
-const handleDelete = (id, value) => {
+const handleDelete = (id) => {
   if (window.confirm(`Delete ID ${id}?`)) {
     axios({
       method: 'delete',
-      url: `https://api-bootcamp.do.dibimbing.id/api/v1/delete-food/${FOOD_ID}`,
-      value,
-        headers : {          
-          apiKey: `${process.env.REACT_APP_APIKEY}`,
+      url: `https://api-bootcamp.do.dibimbing.id/api/v1/delete-food/${id}`,
+        headers : { 
+
+          apiKey: process.env.REACT_APP_APIKEY,
         }
   })
-  .then(function(response){
+  .then((response)=>{
       console.log(response)
-      setData(response.data.data)
+      setData()
+  })
+  .catch((error)=>{
+    console.log(error);
   })
 }
 }
@@ -114,6 +119,10 @@ const handleDelete = (id, value) => {
 
   <div>
     <nav className="navbar">
+      <input type="checkbox" id="check" />
+      <label for="check" className='checkbtn'>
+      <i><FaBars/></i>
+      </label>
         <h3 className="home">Foodies</h3>
         <ul className="nav-links">
         
@@ -145,7 +154,7 @@ const handleDelete = (id, value) => {
   Hey! We're short of menu! Add one!
   
   <br/>
-    <Form onSubmit={handleAdd}>
+    <Form onSubmit={handleAdd} >
       <Form.Group className="mb-3" controlId="formBasicName">
         <Form.Label>Enter Food name</Form.Label>
         <Form.Control value={name} name="name" type="text" onChange={(e) => setName(e.target.value)} placeholder="Food Name" />
@@ -203,22 +212,6 @@ const handleDelete = (id, value) => {
   </div>
 </div>
 
-{/* <Formik
-initialValues={{
-          name: "",
-          description: "",
-          imageUrl: "",
-          ingredients: [""],
-        }}
-        validationSchema={Yup.object({
-          name: Yup.string().required("Required"),
-          description: Yup.string().required("Required"),
-          imageUrl: Yup.string().required("Required"),
-        })}
-        // onSubmit={onSubmit}
-        >
-      </Formik> */}
-
 </div>
 
 
@@ -268,7 +261,7 @@ initialValues={{
 <div className='edit-meal'>
 {/* ---------------------------EDIT */}
 
-    <Modal show={show} onHide={handleClose}>
+    <Modal show={show} onHide={handleClose} >
         <Modal.Header closeButton>
           <Modal.Title>Edit</Modal.Title>
         </Modal.Header>
@@ -305,7 +298,7 @@ initialValues={{
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary">
+          <Button variant="primary" onClick={handleAdd}>
             Save Changes
           </Button>
         </Modal.Footer>

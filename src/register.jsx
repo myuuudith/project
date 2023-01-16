@@ -92,7 +92,7 @@ return(
         <p className="text-area-f1">Register in this page!!</p><br/>
 
         <div className="body-login">
-      <form onSubmit={formik.handleSubmit}>
+      <form >
       <p className="name-req">Name</p>
         <input
         className="name-req"
@@ -165,7 +165,7 @@ return(
       <br />
       
      
-      <button className="register" type="submit">Submit</button>
+      <button className="register" type="submit" onSubmit={formik.handleSubmit}>Submit</button>
     
 
 </form>

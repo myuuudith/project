@@ -42,7 +42,7 @@ function Login(){
 
     return(
         <>
-        
+
         <nav className="navbar">
         <h3 className="home">Foodies</h3>
         <ul className="nav-links">

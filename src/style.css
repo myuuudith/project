@@ -30,7 +30,6 @@
     height: 75px;
     background-color: burlywood;
     color: black;
-
 }
 
 .login{
@@ -77,7 +76,30 @@ body{
     padding: 0 1rem;
 }
 
+/* .checkbtn{
+    font-size: 30px;
+    color: white;
+    float: right;
+    line-height: 80px;
+    margin-right: 40px;
+    cursor: pointer;
+}
 
+#check{
+    display: none;
+}
+
+@media (max-width:952px) {
+    nav ul li a{
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 858px){
+    .checkbtn{
+        display: block;
+    }
+} */
 /* -----------------MEALITEM-------------------- */
 /* .list{
     text-align: center;
@@ -102,6 +124,12 @@ body{
     text-align: center;
     align-items: center;
     justify-content: center;
+}
+
+.card-menu{
+    width: 40%;
+    right: 35%;
+    left: 30%;
 }
 
 
