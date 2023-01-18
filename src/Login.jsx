@@ -1,10 +1,12 @@
 import React from "react";
+import { useEffect, useState } from 'react';
 import Axios from "axios";
 import { useFormik } from "formik";
 import * as Yup from 'yup';
 import "./login.css";
 import { Link } from "react-router-dom";
-
+import './navbar.css'
+import './navbar'
 function Login(){
   // const navigate = useNavigate();
   const formik = useFormik({
@@ -40,26 +42,38 @@ function Login(){
     },
   });
 
+  // const [lists, setList] = useState()
+  const[toggleMenu, setToggleMenu] = useState(false);
+  const[screenWidth, setScreenWidth] = useState(window.innerWidth )
+  const toggleNav = () =>{
+setToggleMenu(!toggleMenu)
+  }
+
+  useEffect(()=>{
+    const changeWidth=()=>{
+        setScreenWidth(window.innerWidth);
+    }
+    window.addEventListener('resize', changeWidth)
+
+    return()=>{
+        window.removeEventListener('resize', changeWidth)
+    }
+  },[])
+
     return(
         <>
 
-        <nav className="navbar">
-        <h3 className="home">Foodies</h3>
-        <ul className="nav-links">
+<nav>
+        {(toggleMenu || screenWidth > 500) &&(
+        <ul className='list'>
+        <li><a className='items' href="/home">home</a></li>
+        <a className='items' href='/home'>menu</a>
+        <a className='items' href="/login">login</a>
+    </ul>
+        )}
         
-        <Link to="/home" className="home">
-            <li>Home</li>
-          </Link>
-        
-          <Link to="/menu" className="menu">
-            <li>Menu</li>
-          </Link>
-
-          <Link to="/login" className="login">
-            <li>Login</li>
-          </Link>
-        </ul>
-      </nav>
+        <button onClick={toggleNav} className='btn-btn-nav'>BTN</button>
+    </nav>
       
       <div class="alert alert-warning card-register" role="alert">
   <h4 class="alert-heading">Hey-hey-heyy</h4>

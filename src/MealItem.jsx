@@ -4,17 +4,12 @@ import { Form, ButtonGroup, Modal } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { AiFillStar, AiTwotoneEdit } from "react-icons/ai";
 import { FcLike } from "react-icons/fc";
-import {FaBars} from "react-icons/fa";
-// import * as Yup from "yup"
-// import { Formik } from 'formik';
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
-// import { faBars } from '@fortawesome/free-solid-svg-icons';
-
-// const BASE_URL = 'https://api-bootcamp.do.dibimbing.id'
-// const FOOD_ID = 'efdd307b-1d9c-4a47-9d40-d3720708711f'
+import './navbar.css'
+import './navbar'
 
 function MealItem() {
 const [data, setData] = useState([]);
@@ -65,18 +60,20 @@ const getData =(value)=>{
 })
 }
 
-const handleAdd = (e) => {
-  e.preventDefault()
+const handleAdd = (value) => {
   axios ({
     method: 'post',
     url: 'https://api-bootcamp.do.dibimbing.id/api/v1/create-food',
     data: {
-    name: name,
-    ingredients: Ingredients,
-    description: description,
-    image: image,
-    rating: Rating
-    }
+    name: value.name,
+    ingredients: value.Ingredients,
+    description: value.description,
+    image: value.image,
+    rating: value.Rating
+    },
+    headers: {
+      apiKey: process.env.REACT_APP_APIKEY,
+    },
   })
   .then(function (response) {
     // console.log(response);
@@ -96,7 +93,6 @@ const handleDelete = (id) => {
       method: 'delete',
       url: `https://api-bootcamp.do.dibimbing.id/api/v1/delete-food/${id}`,
         headers : { 
-
           apiKey: process.env.REACT_APP_APIKEY,
         }
   })
@@ -110,36 +106,84 @@ const handleDelete = (id) => {
 }
 }
 
+
+const handleLike = (id, isLikef) =>{
+if(!isLikef){
+  axios({
+    method: 'post',
+    url: 'https://api-bootcamp.do.dibimbing.id/api/v1/like',
+    data:{
+      likeFood: id,
+    },
+    headers : { 
+      apiKey: process.env.REACT_APP_APIKEY,
+    },
+  })
+    .then(function(response){
+      console.log(response);
+  })
+  .catch(function(error){
+    console.log(error);
+  });
+} else {
+  axios({
+    method: 'post',
+    url: 'https://api-bootcamp.do.dibimbing.id/api/v1/unlike',
+    data:{
+      likeFood: id,
+    },
+    headers : { 
+      apiKey: process.env.REACT_APP_APIKEY,
+    },
+  })
+    .then(function(response){
+      console.log(response);
+  })
+  .catch(function(error){
+    console.log(error);
+  });
+}
+}
 // useEffect((value) => {
 //   MealItem()
 //  }, []);
+
+// const [lists, setList] = useState()
+  const[toggleMenu, setToggleMenu] = useState(false);
+  const[screenWidth, setScreenWidth] = useState(window.innerWidth )
+  const toggleNav = () =>{
+setToggleMenu(!toggleMenu)
+  }
+
+  useEffect(()=>{
+    const changeWidth=()=>{
+        setScreenWidth(window.innerWidth);
+    }
+    window.addEventListener('resize', changeWidth)
+
+    return()=>{
+        window.removeEventListener('resize', changeWidth)
+    }
+  },[])
+
 
     return(
         <>
 
   <div>
-    <nav className="navbar">
-      <input type="checkbox" id="check" />
-      <label for="check" className='checkbtn'>
-      <i><FaBars/></i>
-      </label>
-        <h3 className="home">Foodies</h3>
-        <ul className="nav-links">
+  <nav>
+        {(toggleMenu || screenWidth > 500) &&(
+        <ul className='list'>
+        <li><a className='items' href="/home">home</a></li>
+        <a className='items' href='/home'>menu</a>
+        <a className='items' href="/login">login</a>
+    </ul>
+        )}
         
-        <Link to="/home" className="home">
-            <li>Home</li>
-          </Link>
-        
-          <Link to="/menu" className="menu">
-            <li>Menu</li>
-          </Link>
+        <button onClick={toggleNav} className='btn-btn-nav'>BTN</button>
+    </nav>
 
-          <Link to="/login" className="login">
-            <li>Login</li>
-          </Link>
-          
-        </ul>
-      </nav>
+
       <div class="card text-center">
   <div class="card-header">
     About Foodies
@@ -229,7 +273,9 @@ const handleDelete = (id) => {
           <h5>{item.name}</h5>
           <p className="desc">{item.description}</p>
           <p className="btn btn-light"><AiFillStar/>{item.rating}</p>
-          <p className='btn btn-dark'><FcLike/>{item.like}</p>
+          <p className='btn btn-light' onClick={()=> handleLike}>{item.isLikef}
+          <FcLike/>
+            </p>
           <p><AiTwotoneEdit/>{item.ingredients}</p>
           <div className=''>
           <td>
