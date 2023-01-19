@@ -86,8 +86,15 @@ const handleAdd = (value) => {
   });
 }
 
+// const handleDelete = (value, id) => {
+//   axios.delete(`https://api-bootcamp.do.dibimbing.id/api/v1/delete-food/${id}`)
+//   .then(res=>{
+//     console.log(res)
+//     console.log(res.data);
+//   })
+// }
 
-const handleDelete = (id) => {
+const handleDelete = (value, id) => {
   if (window.confirm(`Delete ID ${id}?`)) {
     axios({
       method: 'delete',
@@ -97,7 +104,7 @@ const handleDelete = (id) => {
         }
   })
   .then((response)=>{
-      console.log(response)
+      console.log(response.id)
       setData()
   })
   .catch((error)=>{
@@ -105,6 +112,7 @@ const handleDelete = (id) => {
   })
 }
 }
+
 
 
 const handleLike = (id, isLikef) =>{
@@ -175,7 +183,7 @@ setToggleMenu(!toggleMenu)
         {(toggleMenu || screenWidth > 500) &&(
         <ul className='list'>
         <li><a className='items' href="/home">home</a></li>
-        <a className='items' href='/home'>menu</a>
+        {/* <a className='items' href='/home'>menu</a> */}
         <a className='items' href="/login">login</a>
     </ul>
         )}

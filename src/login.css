@@ -30,7 +30,7 @@
     overflow: hidden;
 }
 
-/* .cover{
+.cover-regist{
     position: absolute;
     top: 25%;
     left: 40%;
@@ -39,7 +39,7 @@
     width: 400px;
     background: wheat;
     border-radius: 10px;
-} */
+}
 
 .cover-login{
     position: absolute;

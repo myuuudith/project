@@ -13,7 +13,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <>
       {/* <p>Navbar</p> */}
-      <MealItem />
+      <Login />
     </>,
     errorElement: <p>Page Not Found</p>,
     children: [

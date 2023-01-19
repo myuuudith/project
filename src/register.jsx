@@ -2,8 +2,11 @@ import React from "react";
 import Axios from "axios";
 import { useFormik } from "formik";
 import * as Yup from 'yup';
+import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import "./login.css";
+import './navbar.css'
+import './navbar'
 
 function Regist(){
   // const navigate = useNavigate();
@@ -24,8 +27,7 @@ function Regist(){
         .email("Invalid email address")
         .required("Required"),
       password: Yup.string()
-        .matches(
-        )
+        .matches()
         .required("Required"),
       confirmPass: Yup.string()
         .oneOf([Yup.ref("password")], "Your password doesn't match")
@@ -36,7 +38,7 @@ function Regist(){
         .required("Required"),
     }),
     onSubmit: (values) => {
-      Axios.post(`${process.env.REACT_APP_BASEURL}/api/v1/register`, 
+      Axios.post(`https://api-bootcamp.do.dibimbing.id/api/v1/register`, 
       values,{
         headers : {          
           apiKey: `${process.env.REACT_APP_APIKEY}`,
@@ -60,27 +62,38 @@ function Regist(){
     },
   });
 
+  const[toggleMenu, setToggleMenu] = useState(false);
+  const[screenWidth, setScreenWidth] = useState(window.innerWidth )
+  const toggleNav = () =>{
+setToggleMenu(!toggleMenu)
+  }
+
+  useEffect(()=>{
+    const changeWidth=()=>{
+        setScreenWidth(window.innerWidth);
+    }
+    window.addEventListener('resize', changeWidth)
+
+    return()=>{
+        window.removeEventListener('resize', changeWidth)
+    }
+  },[])
+
 return(
 <>
         {/* <----REGISTLINEEEE-----> */}
         <div>
-   <nav className="navbar">
-        <h3 className="home">Foodies</h3>
-        <ul className="nav-links">
+  <nav>
+        {(toggleMenu || screenWidth > 500) &&(
+        <ul className='list'>
+        <li><a className='items' href="/home">home</a></li>
+        <a className='items' href='/home'>menu</a>
+        <a className='items' href="/login">login</a>
+    </ul>
+        )}
         
-        <Link to="/home" className="home">
-            <li>Home</li>
-          </Link>
-        
-          <Link to="/menu" className="menu">
-            <li>Menu</li>
-          </Link>
-
-          <Link to="/login" className="login">
-            <li>Login</li>
-          </Link>
-        </ul>
-      </nav>
+        <button onClick={toggleNav} className='btn-btn-nav'>BTN</button>
+    </nav>
 
       <div class="alert alert-warning card-register" role="alert">
   <h4 class="alert-heading">Hey-hey-heyy</h4>
@@ -88,7 +101,7 @@ return(
   <br/>
 </div>
 
-      <div className="cover">
+      <div className="cover-regist">
         <p className="text-area-f1">Register in this page!!</p><br/>
 
         <div className="body-login">

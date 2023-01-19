@@ -67,7 +67,7 @@ setToggleMenu(!toggleMenu)
         {(toggleMenu || screenWidth > 500) &&(
         <ul className='list'>
         <li><a className='items' href="/home">home</a></li>
-        <a className='items' href='/home'>menu</a>
+        {/* <a className='items' href='/home'>menu</a> */}
         <a className='items' href="/login">login</a>
     </ul>
         )}
@@ -120,8 +120,9 @@ setToggleMenu(!toggleMenu)
         <div>{formik.errors.password}</div>
       ) : null}
       <br />
-
-      <button className="login-login" type="submit">Log-in</button>
+        <button className="login-login" type="submit">Log-in</button>
+        
+      
     <p className="or-login">or </p>
       <Link to="/register" className="register">
       <button className="register" type="submit">Register</button>
