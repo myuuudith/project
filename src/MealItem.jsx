@@ -4,7 +4,6 @@ import { Form, ButtonGroup, Modal } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-// import { Link } from 'react-router-dom';
 import { AiFillStar, AiTwotoneEdit } from "react-icons/ai";
 import { FcLike } from "react-icons/fc";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
@@ -51,6 +50,7 @@ const getData =(value)=>{
     url: `https://api-bootcamp.do.dibimbing.id/api/v1/foods`,
     value,
     headers : {          
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
       apiKey: `${process.env.REACT_APP_APIKEY}`,
     }
 })
@@ -72,6 +72,7 @@ const handleAdd = (value) => {
     rating: value.Rating
     },
     headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
       apiKey: process.env.REACT_APP_APIKEY,
     },
   })
@@ -86,20 +87,40 @@ const handleAdd = (value) => {
   });
 }
 
-// const handleDelete = (value, id) => {
-//   axios.delete(`https://api-bootcamp.do.dibimbing.id/api/v1/delete-food/${id}`)
-//   .then(res=>{
-//     console.log(res)
-//     console.log(res.data);
-//   })
-// }
+const handleSubmit = (value, id)=>{
+  axios({
+    method: 'post',
+    url: `https://api-bootcamp.do.dibimbing.id/api/v1/update-food/${id}`,
+    data: {
+      name: value.name,
+      ingredients: value.Ingredients,
+      description: value.description,
+      image: value.image,
+      rating: value.Rating
+      },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        apiKey: process.env.REACT_APP_APIKEY,
+      }
+  })
+  .then((response)=>{
+    console.log(response)
+    setData()
+  })
+  .catch((error)=>{
+    console.log(error);
+  })
+}
 
-const handleDelete = (value, id) => {
+
+const handleDelete = (id) => {
   if (window.confirm(`Delete ID ${id}?`)) {
     axios({
-      method: 'delete',
+      method: "delete",
       url: `https://api-bootcamp.do.dibimbing.id/api/v1/delete-food/${id}`,
         headers : { 
+          // Authorization: `Bearer ${localStorage.getItem("token")}`,
+          // Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1pZnRhaGZhcmhhbkBnbWFpbC5jb20iLCJ1c2VySWQiOiJjYTIzZDdjYy02Njk1LTQzNGItODE2Yy03ZTlhNWMwNGMxNjQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NjE4NzUzMjF9.wV2OECzC25qNujtyb9YHyzYIbYEV-wud3TQsYv7oB4Q`,
           apiKey: process.env.REACT_APP_APIKEY,
         }
   })
@@ -173,6 +194,8 @@ setToggleMenu(!toggleMenu)
         window.removeEventListener('resize', changeWidth)
     }
   },[])
+
+
 
 
     return(
@@ -269,29 +292,38 @@ setToggleMenu(!toggleMenu)
 
     <section className='py-4 py-lg-5 container'>
       <div className='row justify-content-center align-item-center'>
-      {data.map((item, index) => {
+      {data.map((item) => {
         
       return <React.Fragment >
 <div className="container text-center">
     <div className="row">
-      <div className="col-md-6 mx-0 mb-4 item11" key={index}>
+      <div className="col-md-6 mx-0 mb-4 item11" key={item.id}>
+      
       <div className="card">
         <img src={item.imageUrl} className="card-img-top" alt={item.name}/>
         <div className="card-body">
           <h5>{item.name}</h5>
-          <p className="desc">{item.description}</p>
+          
+          <p><AiTwotoneEdit/>
+          {item.ingredients.map((q, index) => {
+            return (
+            <span key={index}> {(index ? ", " : "") + q} </span>
+            );})}
+          </p>
+          
           <p className="btn btn-light"><AiFillStar/>{item.rating}</p>
           <p className='btn btn-light' onClick={()=> handleLike}>{item.isLikef}
-          <FcLike/>
-            </p>
-          <p><AiTwotoneEdit/>{item.ingredients}</p>
-          <div className=''>
+          <FcLike/></p>
+        
+        <div className=''>
+          
           <td>
             <ButtonGroup aria-label="Action">
       <Button size="sm" variant="light" className='edit-meal1' 
       onClick={() => handleShow(item.id)}
       >Edit your menu</Button>
     </ButtonGroup>
+   
     <ButtonGroup aria-label="Action">
       <Button size="sm" variant="danger" className='edit-meal1'
       onClick={() => handleDelete(item.id)}>
@@ -352,7 +384,7 @@ setToggleMenu(!toggleMenu)
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleAdd}>
+          <Button variant="primary" onClick={handleSubmit}>
             Save Changes
           </Button>
         </Modal.Footer>
